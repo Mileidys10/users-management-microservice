@@ -1,0 +1,245 @@
+{
+  "info": {
+    "_postman_id": "7f13b41d-4001-4475-9b34-8c8a779124be",
+    "name": "Taller de MicroServicios Spring Boot Hexagonal",
+    "description": "Colección completa de solicitudes HTTP para el microservicio de gestión de usuarios (Local, Aiven, Render, TiDB).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth - Iniciar Sesion (Login)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code === 200) {",
+              "    var jsonData = pm.response.json();",
+              "    if (jsonData.accessToken) {",
+              "        pm.collectionVariables.set('token', jsonData.accessToken);",
+              "    }",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"Admin1234!\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        },
+        "description": "Autenticación para obtener el token JWT Bearer."
+      },
+      "response": []
+    },
+    {
+      "name": "Usuarios - Listar Todos los Usuarios",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/users",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "users"
+          ]
+        },
+        "description": "Obtiene la lista completa de usuarios registrados."
+      },
+      "response": []
+    },
+    {
+      "name": "Usuarios - Crear Usuario",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": \"0001\",\n  \"name\": \"El Profe\",\n  \"email\": \"arrietajohn@gmail.com\",\n  \"password\": \"Abcde1234567**\",\n  \"role\": \"ADMIN\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/users",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "users"
+          ]
+        },
+        "description": "Crea un nuevo usuario en estado PENDING y dispara la notificación de bienvenida asíncrona."
+      },
+      "response": []
+    },
+    {
+      "name": "Usuarios - Obtener Usuario por ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/users/0001",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "users",
+            "0001"
+          ]
+        },
+        "description": "Obtiene la información de un usuario dado su ID."
+      },
+      "response": []
+    },
+    {
+      "name": "Usuarios - Actualizar Usuario por ID",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": \"0001\",\n  \"name\": \"El Profe\",\n  \"email\": \"arrietajohn@gmail.com\",\n  \"role\": \"ADMIN\",\n  \"status\": \"ACTIVE\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/users/0001",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "users",
+            "0001"
+          ]
+        },
+        "description": "Actualiza la información del usuario y su estado a ACTIVE."
+      },
+      "response": []
+    },
+    {
+      "name": "Usuarios - Eliminar Usuario por ID",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/users/0001",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "users",
+            "0001"
+          ]
+        },
+        "description": "Elimina un usuario por su identificador."
+      },
+      "response": []
+    },
+    {
+      "name": "Health - Estado del Servicio",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "health"
+          ]
+        },
+        "description": "Endpoint público para monitoreo de salud del microservicio en Render / Docker."
+      },
+      "response": []
+    }
+  ]
+}

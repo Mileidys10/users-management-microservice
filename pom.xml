@@ -227,6 +227,7 @@
             <configuration>
               <excludes>
                 <exclude>com/jcaa/usersmanagement/Main.class</exclude>
+                <exclude>com/jcaa/usersmanagement/infrastructure/entrypoint/desktop/**</exclude>
               </excludes>
             </configuration>
           </execution>
